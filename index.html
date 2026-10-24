@@ -19,7 +19,7 @@
 :root{
   --verde:#1F8A4C; --verde-claro:#E4F2E9;
   --oliva:#A39630; --oliva-esc:#7C7221; --oliva-claro:#F3F0D8;
-  --escuro:#0E3B2C; --tinta:#10231B; --tinta-2:#4A5A52; --tinta-3:#7D8A83;
+  --escuro:#0E3B2C; --destaque:#D9CD5A; --tinta:#10231B; --tinta-2:#4A5A52; --tinta-3:#7D8A83;
   --fundo:#F4F3EC; --card:#FFFFFF; --linha:#E1DED0; --linha-2:#EDEBE2;
   --vermelho:#C2412D; --vermelho-claro:#FBE9E5;
   --ambar:#B7791F; --ambar-claro:#FBF1DC;
@@ -44,7 +44,7 @@ h1{font-size:26px} h2{font-size:20px} h3{font-size:16px}
 .topo{position:sticky;top:0;z-index:20;background:var(--escuro);color:#fff;display:flex;align-items:center;gap:12px;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top))}
 .topo .marca{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;min-width:0}
 .topo .marca svg{width:34px;height:34px;flex:none}
-.topo .marca b{font-family:var(--fonte-t);font-size:19px;color:#D9CD5A;display:block;line-height:1}
+.topo .marca b{font-family:var(--fonte-t);font-size:19px;color:var(--destaque);display:block;line-height:1}
 .topo .marca span{font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:#BFD8CB}
 .topo .esp{flex:1}
 .sync{display:flex;align-items:center;gap:6px;font-size:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:#E6EFEA;padding:5px 10px;border-radius:99px;cursor:pointer}
@@ -198,7 +198,7 @@ a.item:hover .t{color:var(--verde)}
 @keyframes flasherr{0%{background:#f6cdc4}100%{background:#fff}}
 
 /* ---------- login / portal ---------- */
-.tela-cheia{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;background:linear-gradient(160deg,var(--escuro) 0%,#173f30 55%,#2b4a1f 100%)}
+.tela-cheia{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 16px;background:linear-gradient(160deg,var(--escuro) 0%,color-mix(in srgb,var(--escuro) 75%,var(--verde)) 60%,color-mix(in srgb,var(--escuro) 70%,var(--oliva)) 100%)}
 .tela-cheia .caixa{background:#fff;border-radius:18px;padding:26px 22px;width:100%;max-width:400px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
 .tela-cheia .rodape-dev{border:0;color:#9fbcae}
 .tela-cheia .rodape-dev a,.tela-cheia .rodape-dev b{color:#d6e6dd}
@@ -249,17 +249,19 @@ a.item:hover .t{color:var(--verde)}
 <div id="raiz"></div>
 <div id="print"></div>
 <script>
+const MARCA = {"id": "mymoving", "idb": "mymoving-vistorias", "ls": "mm_", "app": "My Moving Vistorias", "nome": "My moving", "sub": "Transportes", "empresa": "My Moving Transportes", "curto": "My Moving", "logo": "<svg viewBox=\"0 0 100 100\" aria-hidden=\"true\"><polygon points=\"50,4 92,27 92,73 50,96 8,73 8,27\" fill=\"#A39630\"/><polygon points=\"8,27 50,50 50,96 8,73\" fill=\"#B4A73A\"/><polygon points=\"50,50 92,27 92,73 50,96\" fill=\"#968A28\"/><polygon points=\"50,4 92,27 50,50 8,27\" fill=\"#1F8A4C\"/><polygon points=\"24,30 50,16 78,31 78,62 57,74 57,44\" fill=\"#0D2A1F\"/></svg>", "cores": {"verde": "#1F8A4C", "verdeClaro": "#E4F2E9", "oliva": "#A39630", "olivaEsc": "#7C7221", "olivaClaro": "#F3F0D8", "escuro": "#0E3B2C", "destaque": "#D9CD5A"}, "contato": {"fone": "(11) 94023-5759", "email": "contato@mymoving.com.br", "site": "www.mymoving.com.br", "endereco": "Santana de Parnaíba — SP"}, "repo": "mymoving-vistorias", "proposta": false, "prefixo": "MM"};
 'use strict';
 /* =====================================================================
-   My Moving Vistorias — núcleo
+   Sistema de Vistorias de Mudanças — núcleo (white-label: dados da marca em MARCA)
    Desenvolvido por Foster Tech Soluções — Wilson Foster · (24) 99209-6103 · comercial@fosterconstrucoes.com.br
    ===================================================================== */
 
-// >>> Preencha com os dados do projeto Supabase da My Moving (ou configure
+// >>> Preencha com os dados do projeto Supabase da empresa (ou configure
 //     pela tela Configurações > Conexão). Vazio = modo demonstração local.
 const CONEXAO_PADRAO = { url: '', key: '' };
 
-const VERSAO = '1.0.0';
+const VERSAO = '1.1.0';
+const LSK = k => MARCA.ls + k; // chaves locais separadas por empresa (apps no mesmo domínio)
 const DEV = {
   marca: 'Foster Tech Soluções',
   slogan: '',
@@ -355,9 +357,9 @@ const CLAUSULAS_PADRAO = `1. OBJETO. A CONTRATADA prestará ao CONTRATANTE o ser
 11. ASSINATURA ELETRÔNICA. As partes reconhecem como válidas as assinaturas eletrônicas coletadas no sistema, com registro de nome, documento, data, hora e localização.
 12. FORO. Fica eleito o foro do domicílio do CONTRATANTE para resolver questões deste contrato.`;
 const CONFIG_PADRAO = {
-  empresa_nome:'My Moving Transportes', empresa_cnpj:'', empresa_fone:'(11) 94023-5759',
-  empresa_email:'contato@mymoving.com.br', empresa_site:'www.mymoving.com.br',
-  empresa_endereco:'Santana de Parnaíba — SP', google_review_url:'',
+  empresa_nome:MARCA.empresa, empresa_cnpj:'', empresa_fone:MARCA.contato.fone,
+  empresa_email:MARCA.contato.email, empresa_site:MARCA.contato.site,
+  empresa_endereco:MARCA.contato.endereco, google_review_url:'',
   valor_m3:120, valor_km:6, valor_ajudante:180, taxa_embalagem_m3:35, taxa_item_especial:250,
   validade_orcamento_dias:15,
   contrato_pagamento_padrao:'50% na assinatura e 50% no dia da mudança, via PIX ou cartão',
@@ -414,8 +416,8 @@ const IC = {
 };
 const ic = (n, extra='') => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" ${extra}>${IC[n]||''}</svg>`;
 
-// Cubo da marca My Moving (recriação vetorial do logotipo)
-const LOGO = `<svg viewBox="0 0 100 100" aria-hidden="true"><polygon points="50,4 92,27 92,73 50,96 8,73 8,27" fill="#A39630"/><polygon points="8,27 50,50 50,96 8,73" fill="#B4A73A"/><polygon points="50,50 92,27 92,73 50,96" fill="#968A28"/><polygon points="50,4 92,27 50,50 8,27" fill="#1F8A4C"/><polygon points="24,30 50,16 78,31 78,62 57,74 57,44" fill="#0D2A1F"/></svg>`;
+// Logo da empresa (vem de marcas/<empresa>.json)
+const LOGO = MARCA.logo;
 
 /* ---------------- toast / modal ---------------- */
 function toast(msg, tipo=''){
@@ -449,7 +451,7 @@ function confirmar(msg, ok='Confirmar'){
 const IDB = {
   db: null,
   abrir(){ return new Promise((res, rej) => {
-    const r = indexedDB.open('mymoving-vistorias', 1);
+    const r = indexedDB.open(MARCA.idb, 1);
     r.onupgradeneeded = () => { const d = r.result;
       TABELAS.forEach(t => d.objectStoreNames.contains(t) || d.createObjectStore(t, {keyPath:'id'}));
       ['outbox'].forEach(t => d.objectStoreNames.contains(t) || d.createObjectStore(t, {keyPath:'k'}));
@@ -506,7 +508,7 @@ async function salvarConfig(dados){
 /* ---------------- Supabase / sessão ---------------- */
 let SB = null, SESSAO = null, PERFIL = null, MODO_DEMO = false;
 function conexao(){
-  try { const c = JSON.parse(localStorage.getItem('mm_conexao') || 'null'); if (c && c.url && c.key) return c; } catch(e){}
+  try { const c = JSON.parse(localStorage.getItem(LSK('conexao')) || 'null'); if (c && c.url && c.key) return c; } catch(e){}
   return CONEXAO_PADRAO.url && CONEXAO_PADRAO.key ? CONEXAO_PADRAO : null;
 }
 function urlFoto(f){
@@ -619,7 +621,7 @@ async function comprimirFoto(arquivo, carimbo){
   cx.fillStyle = 'rgba(14,59,44,.78)'; cx.fillRect(0, h-faixa, w, faixa);
   cx.fillStyle = '#fff'; cx.font = `600 ${fs}px Archivo, sans-serif`; cx.textBaseline = 'middle';
   cx.fillText(`${carimbo} · ${new Date().toLocaleString('pt-BR')}`, fs*.7, h-faixa/2);
-  cx.fillStyle = '#D9CD5A'; cx.textAlign = 'right'; cx.fillText('My Moving', w-fs*.7, h-faixa/2);
+  cx.fillStyle = MARCA.cores.destaque; cx.textAlign = 'right'; cx.fillText(MARCA.curto, w-fs*.7, h-faixa/2);
   return await new Promise(res => cv.toBlob(res, 'image/jpeg', 0.78));
 }
 function geo(){
@@ -734,7 +736,7 @@ function imprimir(html){
 }
 const rodapeDevHTML = (curto) => curto
   ? `Sistema desenvolvido por <b>${DEV.marca}</b> · ${DEV.nome} · ${DEV.fone} · ${DEV.email}`
-  : `Desenvolvido por <a href="${DEV.wa}" target="_blank" rel="noopener"><b>${DEV.marca}</b></a>${DEV.slogan ? ` <span class="tiny">${DEV.slogan}</span>` : ""}<br>${DEV.nome} · <a href="${DEV.wa}" target="_blank" rel="noopener">${DEV.fone}</a> · <a href="mailto:${DEV.email}">${DEV.email}</a><br><span class="tiny">My Moving Vistorias v${VERSAO}</span>`;
+  : `Desenvolvido por <a href="${DEV.wa}" target="_blank" rel="noopener"><b>${DEV.marca}</b></a>${DEV.slogan ? ` <span class="tiny">${DEV.slogan}</span>` : ""}<br>${DEV.nome} · <a href="${DEV.wa}" target="_blank" rel="noopener">${DEV.fone}</a> · <a href="mailto:${DEV.email}">${DEV.email}</a><br><span class="tiny">${MARCA.app} v${VERSAO}</span>`;
 
 /* ---------------- regras de negócio ---------------- */
 function calcOrcamento(m){
@@ -767,7 +769,7 @@ function gerarCodigo(){
   const d = new Date(); const yy = String(d.getFullYear()).slice(2);
   const mm = String(d.getMonth()+1).padStart(2,'0');
   const r = Math.random().toString(36).slice(2,6).toUpperCase();
-  return `MM${yy}${mm}-${r}`;
+  return `${MARCA.prefixo || 'MV'}${yy}${mm}-${r}`;
 }
 const nomeCliente = id => pega('clientes', id)?.nome || 'Cliente não informado';
 const papel = () => PERFIL?.papel || 'equipe';
@@ -787,7 +789,7 @@ function moldura(){
   const r = $('#raiz');
   r.innerHTML = `
   <header class="topo">
-    <a class="marca" href="#/inicio">${LOGO}<div><b>My moving</b><span>Vistorias</span></div></a>
+    <a class="marca" href="#/inicio">${LOGO}<div><b>${esc(MARCA.nome)}</b><span>Vistorias</span></div></a>
     <div class="esp"></div>
     <button class="sync" id="sync" title="Sincronizar agora"></button>
   </header>
@@ -839,8 +841,9 @@ window.addEventListener('hashchange', render);
 function telaLogin(msg){
   const tem = !!conexao();
   $('#raiz').innerHTML = `<div class="tela-cheia"><div class="caixa">
-    <div class="logo-grande">${LOGO}<div><b>My moving</b><span>Transportes · Vistorias</span></div></div>
+    <div class="logo-grande">${LOGO}<div><b>${esc(MARCA.nome)}</b><span>${esc(MARCA.sub)} · Vistorias</span></div></div>
     ${msg ? `<div class="alerta-box amb small">${esc(msg)}</div>` : ''}
+    ${MARCA.proposta ? `<div class="alerta-box azul small" style="display:block">Demonstração preparada pela <b>${DEV.marca}</b> para a ${esc(MARCA.empresa)}. Dados fictícios.</div>` : ''}
     ${tem ? `<form id="flogin">
       <label class="campo"><span>E-mail</span><input type="email" name="email" required autocomplete="username"></label>
       <label class="campo"><span>Senha</span><input type="password" name="senha" required autocomplete="current-password" minlength="6"></label>
@@ -874,16 +877,16 @@ function modalConexao(){
     <label class="campo"><span>Chave pública (anon / publishable)</span><input name="key" value="${esc(c0.key)}"></label>
     <div class="acoes" style="justify-content:space-between"><button type="button" class="btn perigo" data-rm>Remover conexão</button><button class="btn prim">Salvar e recarregar</button></div></form>`, (c) => {
     $('form', c).onsubmit = async e => { e.preventDefault(); const d = form2obj(e.target); if (!d.url || !d.key) return toast('Preencha os dois campos', 'erro');
-      if (localStorage.getItem('mm_demo') || MODO_DEMO) { for (const t of [...TABELAS, 'outbox', 'blobs', 'meta']) await IDB.limpa(t); localStorage.removeItem('mm_demo'); }
-      localStorage.setItem('mm_conexao', JSON.stringify({ url: d.url.trim(), key: d.key.trim() })); location.href = location.pathname; };
+      if (localStorage.getItem(LSK('demo')) || MODO_DEMO) { for (const t of [...TABELAS, 'outbox', 'blobs', 'meta']) await IDB.limpa(t); localStorage.removeItem(LSK('demo')); }
+      localStorage.setItem(LSK('conexao'), JSON.stringify({ url: d.url.trim(), key: d.key.trim() })); location.href = location.pathname; };
     $('[data-rm]', c).onclick = async () => { if (OUT.size && !(await confirmar(`Há ${OUT.size} alteração(ões) não enviadas que serão perdidas. Remover a conexão?`, 'Remover'))) return;
-      for (const t of [...TABELAS, 'outbox', 'blobs', 'meta']) await IDB.limpa(t); localStorage.removeItem('mm_conexao'); location.href = location.pathname; };
+      for (const t of [...TABELAS, 'outbox', 'blobs', 'meta']) await IDB.limpa(t); localStorage.removeItem(LSK('conexao')); location.href = location.pathname; };
   });
 }
 async function vSair(){
   if (!(await confirmar(MODO_DEMO ? 'Sair do modo demonstração? Os dados de demonstração continuam no aparelho.' : (OUT.size ? `Há ${OUT.size} alteração(ões) ainda não enviadas. Elas continuam salvas neste aparelho. Sair mesmo assim?` : 'Sair da conta?'), 'Sair'))) { history.back(); return; }
   if (SB && !MODO_DEMO) await SB.auth.signOut();
-  localStorage.removeItem('mm_demo'); PERFIL = null; MODO_DEMO = false; location.hash = ''; location.reload();
+  localStorage.removeItem(LSK('demo')); PERFIL = null; MODO_DEMO = false; location.hash = ''; location.reload();
 }
 
 /* ---------------- início / painel ---------------- */
@@ -1574,7 +1577,7 @@ async function abaLaudo(el, m){
 /* ---------------- documentos para impressão ---------------- */
 function docCab(titulo, m){
   const cfg = config();
-  return `<div class="dcab"><div class="lg">${LOGO}<div><b>My moving</b><span style="font-family:var(--fonte-t);font-weight:700;color:var(--escuro)">Transportes</span></div></div>
+  return `<div class="dcab"><div class="lg">${LOGO}<div><b>${esc(MARCA.nome)}</b><span style="font-family:var(--fonte-t);font-weight:700;color:var(--escuro)">${esc(MARCA.sub)}</span></div></div>
   <div style="text-align:right"><div style="font-family:var(--fonte-t);font-size:16px;font-weight:700">${esc(titulo)}</div><div>${m ? esc(m.codigo)+' · ' : ''}emitido em ${fmtDH(agora())}</div>
   <div style="font-size:10px;color:#555">${esc(cfg.empresa_nome)}${cfg.empresa_cnpj?' · CNPJ '+esc(cfg.empresa_cnpj):''} · ${esc(cfg.empresa_fone)} · ${esc(cfg.empresa_email)}</div></div></div>`;
 }
@@ -1627,7 +1630,7 @@ function docEtiquetas(m, vs){
     <div class="cod">${esc(m.codigo)} · ${esc((cli?.nome||'').split(' ')[0])}</div><div class="n">${v.numero}<span style="font-size:16px;color:#666">/${resumoVolumes(m.id).total}</span></div>
     <div class="dest">→ ${esc(v.comodo_destino||'')}</div><div style="font-size:10.5px;color:#333;overflow:hidden;max-height:28px">${esc(v.descricao||VOL_TIPO[v.tipo])}</div>
     ${['fragil','eletro','especial'].includes(v.tipo) ? `<div><span class="fr">${v.tipo==='fragil'?'FRÁGIL':v.tipo==='eletro'?'ELETRÔNICO':'ESPECIAL'}</span></div>` : ''}
-    <div class="mm">My moving Transportes</div></div></div>`;
+    <div class="mm">${esc(MARCA.empresa)}</div></div></div>`;
   let html = '';
   for (let i = 0; i < vs.length; i += 10) html += `<div class="etiquetas ${i?'quebra':''}" style="${i?'page-break-before:always':''}">${vs.slice(i, i+10).map(etq).join('')}</div>`;
   return html || '<p>Nenhum volume.</p>';
@@ -1909,7 +1912,7 @@ async function vConfig(c){
   $('#bbak').onclick = () => { const o = {}; TABELAS.forEach(t => o[t] = [...S[t].values()]);
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(o)], {type:'application/json'})); a.download = `mymoving-backup-${hojeISO()}.json`; a.click(); };
   $('#breset') && ($('#breset').onclick = async () => { if (!(await confirmar('Apagar todos os dados de demonstração deste aparelho?', 'Apagar'))) return;
-    for (const t of [...TABELAS, 'outbox', 'blobs', 'meta']) await IDB.limpa(t); localStorage.removeItem('mm_demo'); location.reload(); });
+    for (const t of [...TABELAS, 'outbox', 'blobs', 'meta']) await IDB.limpa(t); localStorage.removeItem(LSK('demo')); location.reload(); });
 }
 async function vMais(c){
   c.innerHTML = `<div class="cab"><div><h1>Mais</h1><div class="sub">${esc(PERFIL.nome)} · ${PAPEL_NOME[papel()]}</div></div></div>
@@ -1940,7 +1943,7 @@ async function telaPortal(token){
     if (SB) { const { data, error } = await SB.rpc('portal_mudanca', { p_token: token }); if (error) throw error; d = data; }
     else d = montarPortalLocal(token);
   } catch (e) { console.error(e); }
-  if (!d) { raiz.innerHTML = `<div class="tela-cheia"><div class="caixa"><div class="logo-grande">${LOGO}<div><b>My moving</b><span>Transportes</span></div></div><p>Link inválido ou expirado. Fale com a ${esc(CONFIG_PADRAO.empresa_nome)}: ${esc(CONFIG_PADRAO.empresa_fone)}.</p></div><footer class="rodape-dev">${rodapeDevHTML(false)}</footer></div>`; return; }
+  if (!d) { raiz.innerHTML = `<div class="tela-cheia"><div class="caixa"><div class="logo-grande">${LOGO}<div><b>${esc(MARCA.nome)}</b><span>${esc(MARCA.sub)}</span></div></div><p>Link inválido ou expirado. Fale com a ${esc(CONFIG_PADRAO.empresa_nome)}: ${esc(CONFIG_PADRAO.empresa_fone)}.</p></div><footer class="rodape-dev">${rodapeDevHTML(false)}</footer></div>`; return; }
   const cfg = Object.assign({}, CONFIG_PADRAO, d.empresa || {});
   const m = d.mudanca; const vols = d.volumes || [];
   const furl = f => f._url || (conexao() ? `${conexao().url.replace(/\/$/,'')}/storage/v1/object/public/fotos/${f.caminho}` : '');
@@ -1950,10 +1953,10 @@ async function telaPortal(token){
   const mov = c('carregado') + c('entregue') + c('armazenado');
   const ent = c('entregue') + c('armazenado');
   const fone = (cfg.empresa_fone||'').replace(/\D/g,'');
-  document.title = `Mudança ${m.codigo} — My Moving`;
+  document.title = `Mudança ${m.codigo} — ${MARCA.curto}`;
   raiz.innerHTML = `
   <div class="portal-topo"><div class="in">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">${LOGO.replace('<svg','<svg style="width:40px;height:40px"')}<div><b style="font-family:var(--fonte-t);font-size:21px;color:#D9CD5A;display:block;line-height:1">My moving</b><span style="font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:#BFD8CB">Transportes</span></div></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">${LOGO.replace('<svg','<svg style="width:40px;height:40px"')}<div><b style="font-family:var(--fonte-t);font-size:21px;color:var(--destaque);display:block;line-height:1">${esc(MARCA.nome)}</b><span style="font-size:11px;letter-spacing:1.6px;text-transform:uppercase;color:#BFD8CB">${esc(MARCA.sub)}</span></div></div>
     <div style="color:#BFD8CB;font-size:13px">Olá, ${esc((d.cliente?.nome||'').split(' ')[0])}! Esta é a sua mudança</div>
     <h1 style="color:#fff;font-size:30px">${esc(m.codigo)}</h1>
     <div style="color:#D6E6DD">${fmtData(m.data_prevista)} · ${esc(TIPO_NOME[m.tipo]||'')}</div>
@@ -1999,7 +2002,7 @@ async function semearDemo(){
   const add = (t, o) => salvar(t, o);
   await salvarConfig({ ...CONFIG_PADRAO, empresa_cnpj: '00.000.000/0001-00 (exemplo)' });
   const p = { adm: 'demo', c1: uuid(), e1: uuid(), e2: uuid(), pa: uuid() };
-  await add('perfis', { id: p.adm, nome: 'Gestor My Moving', papel: 'admin', ativo: true });
+  await add('perfis', { id: p.adm, nome: 'Gestor '+MARCA.curto, papel: 'admin', ativo: true });
   await add('perfis', { id: p.c1, nome: 'Carla Coordenadora', papel: 'coordenador', ativo: true });
   await add('perfis', { id: p.e1, nome: 'Marcos (líder de equipe)', papel: 'equipe', ativo: true });
   await add('perfis', { id: p.e2, nome: 'Rafael', papel: 'equipe', ativo: true });
@@ -2058,9 +2061,9 @@ function assinaturaFake(nome){
 
 /* ---------------- inicialização ---------------- */
 async function entrarDemo(){
-  MODO_DEMO = true; localStorage.setItem('mm_demo', '1');
+  MODO_DEMO = true; localStorage.setItem(LSK('demo'), '1');
   await semearDemo();
-  PERFIL = pega('perfis', 'demo') || { id: 'demo', nome: 'Gestor My Moving', papel: 'admin', ativo: true };
+  PERFIL = pega('perfis', 'demo') || { id: 'demo', nome: 'Gestor '+MARCA.curto, papel: 'admin', ativo: true };
   if (!location.hash || location.hash === '#') location.hash = '#/inicio';
   moldura(); render();
 }
@@ -2074,7 +2077,7 @@ async function aposLogin2(uid){
   let p = pega('perfis', uid);
   if (!p && navigator.onLine) { const { data } = await SB.from('perfis').select('*').eq('id', uid).maybeSingle(); if (data) { p = data; S.perfis.set(p.id, p); await IDB.poe('perfis', p); } }
   if (!p) return telaLogin('Seu perfil ainda não foi criado. Tente novamente em instantes.');
-  if (!p.ativo) return telaLogin('Sua conta foi criada e aguarda liberação do administrador da My Moving.');
+  if (!p.ativo) return telaLogin('Sua conta foi criada e aguarda liberação do administrador da ' + MARCA.curto + '.');
   PERFIL = p;
   if (!location.hash || location.hash === '#') location.hash = '#/inicio';
   moldura(); render();
@@ -2092,7 +2095,7 @@ async function iniciar(){
   if (token) return telaPortal(token);
   if (!SB) {
     if (con && !window.supabase) return telaLogin('Sem internet para carregar o servidor. Abra novamente com conexão.');
-    if (localStorage.getItem('mm_demo')) return entrarDemo();
+    if (localStorage.getItem(LSK('demo'))) return entrarDemo();
     return telaLogin();
   }
   SB.auth.onAuthStateChange((ev, s) => {

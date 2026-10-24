@@ -1,5 +1,6 @@
 // My Moving Vistorias — service worker (funciona offline no campo)
-const CACHE = 'mm-vistorias-v1.0.0';
+const PREFIXO = 'mymoving-vistorias-v';
+const CACHE = PREFIXO + '1.1.0';
 const BASE = ['./', './index.html', './manifest.webmanifest', './icon.svg', './icon-192.png', './icon-512.png'];
 const CDN = [
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js',
@@ -10,7 +11,7 @@ self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => Promise.all([...BASE, ...CDN].map(u => c.add(u).catch(() => {})))).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k.startsWith(PREFIXO) && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
 self.addEventListener('fetch', e => {
   const req = e.request; if (req.method !== 'GET') return;
