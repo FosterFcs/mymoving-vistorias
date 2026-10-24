@@ -8,7 +8,10 @@
 <meta name="theme-color" content="#0E3B2C">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-maskable-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="My Moving">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Archivo+Narrow:wght@600;700&display=swap" rel="stylesheet">
@@ -249,7 +252,7 @@ a.item:hover .t{color:var(--verde)}
 <div id="raiz"></div>
 <div id="print"></div>
 <script>
-const MARCA = {"id": "mymoving", "idb": "mymoving-vistorias", "ls": "mm_", "app": "My Moving Vistorias", "nome": "My moving", "sub": "Transportes", "empresa": "My Moving Transportes", "curto": "My Moving", "logo": "<svg viewBox=\"0 0 100 100\" aria-hidden=\"true\"><polygon points=\"50,4 92,27 92,73 50,96 8,73 8,27\" fill=\"#A39630\"/><polygon points=\"8,27 50,50 50,96 8,73\" fill=\"#B4A73A\"/><polygon points=\"50,50 92,27 92,73 50,96\" fill=\"#968A28\"/><polygon points=\"50,4 92,27 50,50 8,27\" fill=\"#1F8A4C\"/><polygon points=\"24,30 50,16 78,31 78,62 57,74 57,44\" fill=\"#0D2A1F\"/></svg>", "cores": {"verde": "#1F8A4C", "verdeClaro": "#E4F2E9", "oliva": "#A39630", "olivaEsc": "#7C7221", "olivaClaro": "#F3F0D8", "escuro": "#0E3B2C", "destaque": "#D9CD5A"}, "contato": {"fone": "(11) 94023-5759", "email": "contato@mymoving.com.br", "site": "www.mymoving.com.br", "endereco": "Rua Fauna, 310 — Parque Jaguari (Fazendinha), Santana de Parnaíba — SP, CEP 06533-217", "google": "https://share.google/oPAOEIor3SNxmd8RL", "cnpj": "38.289.516/0001-70", "razao": "MY MOVING TRANSPORTES LTDA"}, "repo": "mymoving-vistorias", "proposta": false, "prefixo": "MM", "conexao": {"url": "https://pzcxjpwnfpusgndppnke.supabase.co", "key": "sb_publishable_NqE0w_Ea0sNytncA9M9Sfw_6R6B1X0_"}};
+const MARCA = {"id": "mymoving", "idb": "mymoving-vistorias", "ls": "mm_", "app": "My Moving Vistorias", "nome": "My moving", "sub": "Transportes", "empresa": "My Moving Transportes", "curto": "My Moving", "logo": "<svg viewBox=\"0 0 100 100\" aria-hidden=\"true\"><polygon points=\"50,4 92,27 92,73 50,96 8,73 8,27\" fill=\"#A39630\"/><polygon points=\"8,27 50,50 50,96 8,73\" fill=\"#B4A73A\"/><polygon points=\"50,50 92,27 92,73 50,96\" fill=\"#968A28\"/><polygon points=\"50,4 92,27 50,50 8,27\" fill=\"#1F8A4C\"/><polygon points=\"24,30 50,16 78,31 78,62 57,74 57,44\" fill=\"#0D2A1F\"/></svg>", "cores": {"verde": "#1F8A4C", "verdeClaro": "#E4F2E9", "oliva": "#A39630", "olivaEsc": "#7C7221", "olivaClaro": "#F3F0D8", "escuro": "#0E3B2C", "destaque": "#D9CD5A"}, "contato": {"fone": "(11) 94023-5759", "email": "contato@mymoving.com.br", "site": "www.mymoving.com.br", "endereco": "Rua Fauna, 310 — Parque Jaguari (Fazendinha), Santana de Parnaíba — SP, CEP 06533-217", "google": "https://share.google/oPAOEIor3SNxmd8RL", "cnpj": "38.289.516/0001-70", "razao": "MY MOVING TRANSPORTES LTDA"}, "repo": "mymoving-vistorias", "proposta": false, "prefixo": "MM", "conexao": {"url": "https://pzcxjpwnfpusgndppnke.supabase.co", "key": "sb_publishable_NqE0w_Ea0sNytncA9M9Sfw_6R6B1X0_"}, "icone_nome": "My Moving"};
 'use strict';
 /* =====================================================================
    Sistema de Vistorias de Mudanças — núcleo (white-label: dados da marca em MARCA)
@@ -966,6 +969,7 @@ async function vInicio(c){
   <div class="cab"><div><h1>${saud}, ${esc((PERFIL.nome||'').split(' ')[0])}</h1><div class="sub">${new Date().toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'})}</div></div>
   <a class="btn prim" href="#/mudanca/nova">${ic('mais2')}Nova mudança</a></div>
   ${MODO_DEMO ? `<div class="alerta-box azul small">${ic('nuvem','style="width:18px;flex:none"')}<div>Você está no <b>modo demonstração</b>. Os dados são fictícios e ficam só neste aparelho. Conecte o Supabase em Configurações para usar de verdade.</div></div>` : ''}
+  ${PEDIDO_INSTALAR && !instalado() ? `<div class="alerta-box verde small" style="align-items:center">${ic('caixa','style="width:18px;flex:none"')}<div style="flex:1">Instale o app neste aparelho para abrir direto da tela inicial.</div><button class="btn peq prim" id="binst2">Instalar</button></div>` : ''}
   ${extrav.length ? `<div class="alerta-box verm small">${ic('alerta','style="width:18px;flex:none"')}<div><b>${extrav.length} volume(s) marcados como extraviados.</b> Verifique as ocorrências.</div></div>` : ''}
   ${semVist.length ? `<div class="alerta-box amb small">${ic('alerta','style="width:18px;flex:none"')}<div>${semVist.length} mudança(s) em andamento <b>sem vistoria do imóvel</b>: ${semVist.map(m => `<a href="#/mudanca/${m.id}/vistoria">${esc(m.codigo)}</a>`).join(', ')}</div></div>` : ''}
   <div class="grade g2 g4" style="margin-bottom:14px">
@@ -982,6 +986,7 @@ async function vInicio(c){
     <div class="card"><h3>Agenda — próximos 7 dias</h3><div class="lista">${semana.map(cardMudanca).join('') || '<div class="vazio">Nenhuma mudança agendada.</div>'}</div></div>
     <div class="card"><h3>Ocorrências abertas</h3><div class="lista">${ocAb.slice(0,8).map(o => { const m = pega('mudancas', o.mudanca_id); return `<a class="item" href="#/mudanca/${o.mudanca_id}/ocorrencias"><div class="cresce"><div class="t">${OCOR_TIPO[o.tipo]} · ${esc(m?.codigo||'')}</div><div class="s">${esc(o.descricao)}</div></div><span class="tag ${o.status==='aberta'?'verm':'amb'}">${OCOR_STATUS[o.status]}</span></a>`; }).join('') || '<div class="vazio">Nenhuma ocorrência aberta. 👍</div>'}</div></div>
   </div>`;
+  $('#binst2') && ($('#binst2').onclick = instalarApp);
 }
 
 /* ---------------- lista de mudanças ---------------- */
@@ -2025,8 +2030,10 @@ async function vMais(c){
     ${ehGestor() ? `<a class="item" href="#/relatorios">${ic('grafico','style="width:22px"')}<div class="cresce"><div class="t">Relatórios</div></div></a>` : ''}
     <a class="item" href="#/cadastros">${ic('pessoas','style="width:22px"')}<div class="cresce"><div class="t">Cadastros</div><div class="s">Clientes, caminhões, materiais e equipe</div></div></a>
     ${ehGestor() ? `<a class="item" href="#/config">${ic('engrenagem','style="width:22px"')}<div class="cresce"><div class="t">Configurações</div><div class="s">Empresa, preços, termos, servidor</div></div></a>` : ''}
+    ${!instalado() ? `<a class="item" href="#" id="binst">${ic('caixa','style="width:22px"')}<div class="cresce"><div class="t">Instalar o app neste aparelho</div><div class="s">Ícone próprio na tela inicial, abre em tela cheia</div></div></a>` : ''}
     <a class="item" href="#/sair">${ic('sair','style="width:22px"')}<div class="cresce"><div class="t">Sair</div></div></a>
   </div></div>`;
+  $('#binst') && ($('#binst').onclick = e => { e.preventDefault(); instalarApp(); });
 }
 
 /* ---------------- portal do cliente ---------------- */
@@ -2225,6 +2232,18 @@ async function iniciar(){
   if (SESSAO) aposLogin(); else telaLogin();
 }
 if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+// Instalação como app (sem o selo do Chrome no ícone)
+let PEDIDO_INSTALAR = null;
+const instalado = () => window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); PEDIDO_INSTALAR = e; if (/#\/(inicio|mais)/.test(location.hash)) render(); });
+window.addEventListener('appinstalled', () => { PEDIDO_INSTALAR = null; toast('App instalado na tela inicial', 'ok'); });
+async function instalarApp(){
+  if (PEDIDO_INSTALAR) { PEDIDO_INSTALAR.prompt(); const r = await PEDIDO_INSTALAR.userChoice; if (r.outcome === 'accepted') PEDIDO_INSTALAR = null; return; }
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  modal('Instalar o app', ios ? `<p>No iPhone, abra no <b>Safari</b>, toque em <b>Compartilhar</b> (quadrado com seta) e depois em <b>Adicionar à Tela de Início</b>.</p>`
+    : `<ol style="padding-left:18px;margin:0"><li>Abra este endereço no <b>Chrome</b>.</li><li>Toque nos <b>três pontinhos ⋮</b> no canto de cima.</li><li>Toque em <b>Instalar app</b>. Se aparecer só "Adicionar à tela inicial", escolha essa opção e depois <b>Instalar</b>.</li></ol>
+       <p class="small muted" style="margin-bottom:0">Se você já tinha um atalho com o símbolo do Chrome, apague esse atalho da tela inicial antes.</p>`);
+}
 window.addEventListener('load', () => iniciar().catch(e => { console.error(e); document.body.insertAdjacentHTML('afterbegin', `<div class="alerta-box verm" style="margin:16px">Erro ao iniciar: ${esc(e.message)}</div>`); }));
 
 </script>
