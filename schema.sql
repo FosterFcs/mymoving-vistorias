@@ -144,7 +144,9 @@ create table if not exists public.mudancas (
   deleted          boolean not null default false
 );
 alter table public.mudancas add column if not exists condicoes_pagamento text;
-alter table public.mudancas add column if not exists composicao jsonb;      -- composição do preço (linhas editáveis)
+alter table public.mudancas add column if not exists composicao jsonb;
+alter table public.mudancas add column if not exists os_numero text;          -- nº da ordem de serviço da empresa
+alter table public.mudancas add column if not exists inventarista text;      -- composição do preço (linhas editáveis)
 create index if not exists idx_mudancas_status on public.mudancas(status);
 create index if not exists idx_mudancas_data   on public.mudancas(data_prevista);
 
@@ -184,6 +186,8 @@ create table if not exists public.volumes (
   unique (mudanca_id, numero)
 );
 create index if not exists idx_volumes_mudanca on public.volumes(mudanca_id);
+alter table public.volumes add column if not exists acondicionamento text;   -- 'cx' (vai em caixa) ou 'emb' (embalado)
+alter table public.volumes add column if not exists embalado_por text;
 
 -- Fotos (arquivo no Storage, bucket "fotos")
 create table if not exists public.fotos (
@@ -459,7 +463,7 @@ begin
        'avaliacao_comentario', m.avaliacao_comentario, 'updated_at', m.updated_at),
     'cliente', (select jsonb_build_object('nome', c.nome) from public.clientes c where c.id = m.cliente_id),
     'volumes', coalesce((select jsonb_agg(jsonb_build_object(
-        'id', v.id, 'numero', v.numero, 'tipo', v.tipo, 'descricao', v.descricao,
+        'id', v.id, 'numero', v.numero, 'tipo', v.tipo, 'acondicionamento', v.acondicionamento, 'descricao', v.descricao,
         'comodo_origem', v.comodo_origem, 'comodo_destino', v.comodo_destino,
         'avarias_previas', v.avarias_previas, 'status', v.status,
         'carregado_em', v.carregado_em, 'entregue_em', v.entregue_em) order by v.numero)
