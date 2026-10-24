@@ -249,7 +249,7 @@ a.item:hover .t{color:var(--verde)}
 <div id="raiz"></div>
 <div id="print"></div>
 <script>
-const MARCA = {"id": "mymoving", "idb": "mymoving-vistorias", "ls": "mm_", "app": "My Moving Vistorias", "nome": "My moving", "sub": "Transportes", "empresa": "My Moving Transportes", "curto": "My Moving", "logo": "<svg viewBox=\"0 0 100 100\" aria-hidden=\"true\"><polygon points=\"50,4 92,27 92,73 50,96 8,73 8,27\" fill=\"#A39630\"/><polygon points=\"8,27 50,50 50,96 8,73\" fill=\"#B4A73A\"/><polygon points=\"50,50 92,27 92,73 50,96\" fill=\"#968A28\"/><polygon points=\"50,4 92,27 50,50 8,27\" fill=\"#1F8A4C\"/><polygon points=\"24,30 50,16 78,31 78,62 57,74 57,44\" fill=\"#0D2A1F\"/></svg>", "cores": {"verde": "#1F8A4C", "verdeClaro": "#E4F2E9", "oliva": "#A39630", "olivaEsc": "#7C7221", "olivaClaro": "#F3F0D8", "escuro": "#0E3B2C", "destaque": "#D9CD5A"}, "contato": {"fone": "(11) 94023-5759", "email": "contato@mymoving.com.br", "site": "www.mymoving.com.br", "endereco": "Santana de Parnaíba — SP"}, "repo": "mymoving-vistorias", "proposta": false, "prefixo": "MM", "conexao": {"url": "https://pzcxjpwnfpusgndppnke.supabase.co", "key": "sb_publishable_NqE0w_Ea0sNytncA9M9Sfw_6R6B1X0_"}};
+const MARCA = {"id": "mymoving", "idb": "mymoving-vistorias", "ls": "mm_", "app": "My Moving Vistorias", "nome": "My moving", "sub": "Transportes", "empresa": "My Moving Transportes", "curto": "My Moving", "logo": "<svg viewBox=\"0 0 100 100\" aria-hidden=\"true\"><polygon points=\"50,4 92,27 92,73 50,96 8,73 8,27\" fill=\"#A39630\"/><polygon points=\"8,27 50,50 50,96 8,73\" fill=\"#B4A73A\"/><polygon points=\"50,50 92,27 92,73 50,96\" fill=\"#968A28\"/><polygon points=\"50,4 92,27 50,50 8,27\" fill=\"#1F8A4C\"/><polygon points=\"24,30 50,16 78,31 78,62 57,74 57,44\" fill=\"#0D2A1F\"/></svg>", "cores": {"verde": "#1F8A4C", "verdeClaro": "#E4F2E9", "oliva": "#A39630", "olivaEsc": "#7C7221", "olivaClaro": "#F3F0D8", "escuro": "#0E3B2C", "destaque": "#D9CD5A"}, "contato": {"fone": "(11) 94023-5759", "email": "contato@mymoving.com.br", "site": "www.mymoving.com.br", "endereco": "Santana de Parnaíba — SP", "google": "https://share.google/oPAOEIor3SNxmd8RL"}, "repo": "mymoving-vistorias", "proposta": false, "prefixo": "MM", "conexao": {"url": "https://pzcxjpwnfpusgndppnke.supabase.co", "key": "sb_publishable_NqE0w_Ea0sNytncA9M9Sfw_6R6B1X0_"}};
 'use strict';
 /* =====================================================================
    Sistema de Vistorias de Mudanças — núcleo (white-label: dados da marca em MARCA)
@@ -359,7 +359,7 @@ const CLAUSULAS_PADRAO = `1. OBJETO. A CONTRATADA prestará ao CONTRATANTE o ser
 const CONFIG_PADRAO = {
   empresa_nome:MARCA.empresa, empresa_cnpj:'', empresa_fone:MARCA.contato.fone,
   empresa_email:MARCA.contato.email, empresa_site:MARCA.contato.site,
-  empresa_endereco:MARCA.contato.endereco, google_review_url:'',
+  empresa_endereco:MARCA.contato.endereco, google_review_url:MARCA.contato.google || '',
   valor_m3:120, valor_km:6, valor_ajudante:180, taxa_embalagem_m3:35, taxa_item_especial:250,
   validade_orcamento_dias:15,
   contrato_pagamento_padrao:'50% na assinatura e 50% no dia da mudança, via PIX ou cartão',
